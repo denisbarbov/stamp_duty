@@ -3,10 +3,20 @@ lower_threshold = 500000
 middle_threshold = 925000
 upper_threshold = 1500000
 
+def capping(price, current_calc):
+    if price > middle_threshold and current_calc=='lower':
+        new_price = middle_threshold
+        return new_price
+    elif price <= middle_threshold and current_calc=='lower':
+        return price
+
+
+
 def calculateStampDutyLowerThreshold(price, first_home):
     if first_home:
         percentage = 0.05
-        stamp = (price - lower_threshold)*percentage
+        price_compared = capping(price, 'lower')
+        stamp = (price_compared - lower_threshold)*percentage
         return stamp
     else:
         percentage = 0.08
