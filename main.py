@@ -23,33 +23,48 @@ def capping(price: float, current_calc: str) -> float:
 def calculateStampDutyLowerThreshold(price: float) -> float:
     """
     Function that calculates the amount of tax duty to be paid
-    for properties less than £500,000.
+    in the £500,000 and £925,000 bracket.
     """
-    percentage = 0.05
-    price_compared = capping(price, 'lower')
-    stamp = (price_compared - lower_threshold)*percentage
-    return stamp
+    try:
+        percentage = 0.05
+        price_compared = capping(price, 'lower')
+        stamp = (price_compared - lower_threshold)*percentage
+        return stamp
+    except TypeError:
+            print('You did not enter a valid number.')
+    except:
+        raise ValueError('Number was not in range')
 
 
 def calculateStampDutyMiddleThreshold(price: float) -> float:
     """
     Function that calculates the amount of tax duty to be paid
-    in the £500,000 and £925,000 bracket.
+    in the £925,000 to £1,500,000 bracket.
     """
-    percentage = 0.10
-    price_compared = capping(price, 'middle')
-    stamp = (price_compared - middle_threshold)*percentage
-    return stamp
+    try:
+        percentage = 0.10
+        price_compared = capping(price, 'middle')
+        stamp = (price_compared - middle_threshold)*percentage
+        return stamp
+    except TypeError:
+            print('You did not enter a valid number.')
+    except:
+        raise ValueError('Number was not in range')
 
 
 def calculateStampDutyUpperThreshold(price: float) -> float:
     """
     Function that calculates the amount of tax duty to be paid
-    in the £925,000 to £1,500,000 bracket.
+    above the £1,500,000 bracket.
     """
-    percentage = 0.12
-    stamp = (price - upper_threshold)*percentage
-    return stamp
+    try:
+        percentage = 0.12
+        stamp = (price - upper_threshold)*percentage
+        return stamp
+    except TypeError:
+            print('You did not enter a valid number.')
+    except:
+        raise ValueError('Number was not in range')
 
 
 def calculateStampDuty(price: float) -> str:
@@ -57,25 +72,30 @@ def calculateStampDuty(price: float) -> str:
     Function that calculates the amount of tax duty to be paid
     for a property.
     """
-    if price <= lower_threshold:
-        return 'You will pay no stamp duty.'
+    try:
+        if price <= lower_threshold and price > 0:
+            return 'You will pay no stamp duty.'
 
-    if price > lower_threshold and price <= middle_threshold:
-        stamp = calculateStampDutyLowerThreshold(price)
-        return 'You will pay £{} in stamp duty.'.format(stamp)
+        if price > lower_threshold and price <= middle_threshold:
+            stamp = calculateStampDutyLowerThreshold(price)
+            return 'You will pay £{} in stamp duty.'.format(stamp)
 
-    if price > middle_threshold and price <= upper_threshold:
-        lower_stamp = calculateStampDutyLowerThreshold(price)
-        middle_stamp = calculateStampDutyMiddleThreshold(price)
-        final_stamp = lower_stamp + middle_stamp
-        return 'You will pay £{} in stamp duty.'.format(final_stamp)
+        if price > middle_threshold and price <= upper_threshold:
+            lower_stamp = calculateStampDutyLowerThreshold(price)
+            middle_stamp = calculateStampDutyMiddleThreshold(price)
+            final_stamp = lower_stamp + middle_stamp
+            return 'You will pay £{} in stamp duty.'.format(final_stamp)
 
-    if price > upper_threshold:
-        lower_stamp = calculateStampDutyLowerThreshold(price)
-        middle_stamp = calculateStampDutyMiddleThreshold(price)
-        upper_stamp = calculateStampDutyUpperThreshold(price)
-        final_stamp = lower_stamp + middle_stamp + upper_stamp
-        return 'You will pay £{} in stamp duty.'.format(final_stamp)
+        if price > upper_threshold:
+            lower_stamp = calculateStampDutyLowerThreshold(price)
+            middle_stamp = calculateStampDutyMiddleThreshold(price)
+            upper_stamp = calculateStampDutyUpperThreshold(price)
+            final_stamp = lower_stamp + middle_stamp + upper_stamp
+            return 'You will pay £{} in stamp duty.'.format(final_stamp)
+    except TypeError:
+            print('You did not enter a valid number.')
+    except:
+        raise ValueError('Number is not in range')
     
 
 if __name__ == "__main__":
