@@ -11,7 +11,8 @@ def calculateStampDutyLowerThreshold(price, first_home):
     else:
         percentage = 0.08
         stamp = (price - lower_threshold)*percentage
-
+        return stamp
+        
 def calculateStampDutyMiddleThreshold(price, first_home):
     if first_home:
         percentage = 0.10
