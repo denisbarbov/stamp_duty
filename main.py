@@ -5,30 +5,30 @@ upper_threshold = 1500000
 
 def calculateStampDutyLowerThreshold(price, first_home):
     if first_home:
-        percentage = 1/5
+        percentage = 0.05
         stamp = (price - lower_threshold)*percentage
         return stamp
     else:
-        percentage = 1/8
+        percentage = 0.08
         stamp = (price - lower_threshold)*percentage
 
 def calculateStampDutyMiddleThreshold(price, first_home):
     if first_home:
-        percentage = 1/10
+        percentage = 0.10
         stamp = (price - middle_threshold)*percentage
         return stamp
     else:
-        percentage = 1/13
+        percentage = 0.13
         stamp = (price - middle_threshold)*percentage
         return stamp
 
 def calculateStampDutyUpperThreshold(price, first_home):
     if first_home:
-        percentage = 1/12
+        percentage = 0.12
         stamp = (price - upper_threshold)*percentage
         return stamp
     else:
-        percentage = 1/15
+        percentage = 0.15
         stamp = (price - upper_threshold)*percentage
         return stamp
 
@@ -37,13 +37,13 @@ def calculateStampDuty(price, first_home):
         stamp = calculateStampDutyLowerThreshold(price, first_home)
         return 'You will pay £{} in stamp duty.'.format(stamp)
 
-    elif price > middle_threshold and price <= upper_threshold:
+    if price > middle_threshold and price <= upper_threshold:
         lower_stamp = calculateStampDutyLowerThreshold(price, first_home) 
         middle_stamp = calculateStampDutyMiddleThreshold(price, first_home)
         final_stamp = lower_threshold + middle_threshold
         return 'You will pay £{} in stamp duty.'.format(final_stamp)
 
-    elif price > upper_threshold:
+    if price > upper_threshold:
         lower_stamp = calculateStampDutyLowerThreshold(price, first_home) 
         middle_stamp = calculateStampDutyMiddleThreshold(price, first_home)
         upper_stamp = calculateStampDutyUpperThreshold(price, first_home)
@@ -51,7 +51,7 @@ def calculateStampDuty(price, first_home):
         return 'You will pay £{} in stamp duty.'.format(final_stamp)
 
 def calculateSecondHomeLowerThreshold(price):
-    percentage = 1/3
+    percentage = 0.03
     stamp = price*percentage
     return 'You will pay £{} in stamp duty'.format(stamp)
 
