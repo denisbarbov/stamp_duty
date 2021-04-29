@@ -37,7 +37,7 @@ def calculateSecondHomeLowerThreshold(price):
     percentage = 0.03
     price_compared = capping_additional_homes(price, 'min')
     stamp = price_compared*percentage
-    return 'You will pay £{} in stamp duty'.format(stamp)
+    return stamp
     
     
 def calculateStampDutyLowerThreshold(price, first_home):
@@ -77,34 +77,61 @@ def calculateStampDutyUpperThreshold(price, first_home):
         return stamp
         
 
-def calculateStampDuty(price, first_home):
+def calculateStampDuty(price,first_home):
     if price <= lower_threshold:
         return 'You will pay £0 in stamp duty. This is your first home and below the threshold'
     
     if price > lower_threshold and price <= middle_threshold:
-        stamp = calculateStampDutyLowerThreshold(price, first_home)
+        stamp = calculateStampDutyLowerThreshold(price,first_home)
         return 'You will pay £{} in stamp duty.'.format(stamp)
 
     if price > middle_threshold and price <= upper_threshold:
-        lower_stamp = calculateStampDutyLowerThreshold(price, first_home)
-        middle_stamp = calculateStampDutyMiddleThreshold(price, first_home)
+        lower_stamp = calculateStampDutyLowerThreshold(price,first_home)
+        middle_stamp = calculateStampDutyMiddleThreshold(price,first_home)
         final_stamp = lower_stamp + middle_stamp
         return 'You will pay £{} in stamp duty.'.format(final_stamp)
 
     if price > upper_threshold:
-        lower_stamp = calculateStampDutyLowerThreshold(price, first_home) 
-        middle_stamp = calculateStampDutyMiddleThreshold(price, first_home)
-        upper_stamp = calculateStampDutyUpperThreshold(price, first_home)
+        lower_stamp = calculateStampDutyLowerThreshold(price,first_home)
+        middle_stamp = calculateStampDutyMiddleThreshold(price,first_home)
+        upper_stamp = calculateStampDutyUpperThreshold(price,first_home)
         final_stamp = lower_stamp + middle_stamp + upper_stamp
+        return 'You will pay £{} in stamp duty.'.format(final_stamp)
+        
+        
+def calculateStampDutyAdditional(price,first_home):
+    if price <= lower_threshold:
+        min_stamp = calculateSecondHomeLowerThreshold(price)
+        return 'You will pay £{} in stamp duty.'.format(min_stamp)
+    
+    if price > lower_threshold and price <= middle_threshold:
+        min_stamp = calculateSecondHomeLowerThreshold(price)
+        stamp = calculateStampDutyLowerThreshold(price,first_home)
+        final_stamp = min_stamp + stamp
+        return 'You will pay £{} in stamp duty.'.format(final_stamp)
+
+    if price > middle_threshold and price <= upper_threshold:
+        min_stamp = calculateSecondHomeLowerThreshold(price)
+        lower_stamp = calculateStampDutyLowerThreshold(price,first_home)
+        middle_stamp = calculateStampDutyMiddleThreshold(price,first_home)
+        final_stamp = min_stamp + lower_stamp + middle_stamp
+        return 'You will pay £{} in stamp duty.'.format(final_stamp)
+
+    if price > upper_threshold:
+        min_stamp = calculateSecondHomeLowerThreshold(price)
+        lower_stamp = calculateStampDutyLowerThreshold(price,first_home)
+        middle_stamp = calculateStampDutyMiddleThreshold(price,first_home)
+        upper_stamp = calculateStampDutyUpperThreshold(price,first_home)
+        final_stamp = min_stamp + lower_stamp + middle_stamp + upper_stamp
         return 'You will pay £{} in stamp duty.'.format(final_stamp)
 
 
 
 def stampDutyCalculator(first_home, price):
-    if not first_home and price <= lower_threshold:
-        return calculateSecondHomeLowerThreshold(price)
-    else:
+    if first_home:
         return calculateStampDuty(price, first_home)
+    else:
+        return calculateStampDutyAdditional(price, first_home)
 
 
 if __name__ == "__main__":
