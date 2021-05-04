@@ -2,7 +2,6 @@
 lower_threshold = 500000
 middle_threshold = 925000
 upper_threshold = 1500000
-#additionalhome_min_threshold = 0
 
 def capping(price: float, current_calc: str) -> float:
     """
@@ -97,6 +96,31 @@ def calculateStampDuty(price: float) -> str:
     except:
         raise ValueError('Number is not in range')
     
+
+class TaxBracket:
+    def __init__(self, percentage, lower_bound, upper_bound):
+        self.percentage = percentage # 0
+        self.lower_bound = lower_bound # 0
+        self.upper_bound = upper_bound # 500 001
+
+    def tax_due(self, price):
+        stamp_duty = -1
+        if price <= self.lower_bound:
+            stamp_duty = 0
+        if price > self.upper_bound:
+            stamp_duty = (self.upper_bound - self.lower_bound)*self.percentage
+        if price > self.lower_bound and price <= self.upper_bound:
+            stamp_duty = (price - self.lower_bound)*self.percentage
+        return stamp_duty
+
+bracket1 = TaxBracket(0.12, 500000, 750000)
+print(bracket1.tax_due(0))
+# 0
+print(bracket1.tax_due(250000))
+# 0
+print(bracket1.tax_due(750000))
+# 0
+
 
 if __name__ == "__main__":
     price = input("What's the price of the house you're looking to buy?\n")
